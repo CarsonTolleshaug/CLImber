@@ -1,7 +1,8 @@
 shell: bash
 endpoints:
   - name: List Files
-    pattern: /ls/(.*)
+    route: /ls/(.*)
+    method: GET
     run: ls -la $1
     responses:
     - condition:
@@ -9,5 +10,9 @@ endpoints:
       responseCode: 200
       responseBody: {
         "outputText": "{{stdout}}"
+      }
+    - responseCode: 400
+      responseBody: {
+        "message": "unable to process request"
       }
     
