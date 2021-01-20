@@ -1,4 +1,5 @@
 using CLImber.Configuration;
+using CLImber.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ namespace CLImber
             services.AddSingleton(climberConfig);
 
             services.AddTransient<IRequestInterpreter, RequestInterpreter>();
+            services.AddTransient<ICommandInterpreter, CommandInterpreter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,7 +41,8 @@ namespace CLImber
                 {
                     string route = context.Request.RouteValues["route"]?.ToString() ?? string.Empty;
                     IRequestInterpreter requestInterpreter = app.ApplicationServices.GetRequiredService<IRequestInterpreter>();
-                    await requestInterpreter.HandleRequest(route, context);
+                    IResponse response = await requestInterpreter.HandleRequest(new Request(route, context));
+                    response.WriteTo(context);
                 });
             });
         }
