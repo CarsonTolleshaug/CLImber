@@ -25,27 +25,27 @@ namespace CLImber
         {
             foreach (EndpointConfig endpoint in _config.Endpoints)
             {
-                if (IsMatch(request, endpoint, out GroupCollection groups))
+                if (IsMatch(request, endpoint, out Match regexMatch))
                 {
-                    return await _commandInterpreter.Run(endpoint.Command, endpoint.Responses, groups);
+                    return await _commandInterpreter.Run(endpoint.Command, endpoint.Responses, regexMatch);
                 }
             }
 
             return new UnhandledResponse();
         }
 
-        private bool IsMatch(IRequest request, EndpointConfig endpoint, out GroupCollection groupCollection)
+        private bool IsMatch(IRequest request, EndpointConfig endpoint, out Match regexMatch)
         {
             if (!endpoint.Method.Equals(request.Method, System.StringComparison.OrdinalIgnoreCase))
             {
-                groupCollection = null;
+                regexMatch = null;
                 return false;
             }
 
             Regex regex = new Regex($"^(?:{endpoint.Route})$");
             Match match = regex.Match(request.Route);
 
-            groupCollection = match.Groups;
+            regexMatch = match;
 
             return match.Success;
         }

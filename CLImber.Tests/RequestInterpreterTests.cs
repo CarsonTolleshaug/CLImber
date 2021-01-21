@@ -5,7 +5,7 @@ using CLImber.Configuration;
 using CLImber.Wrappers;
 using FluentAssertions;
 using CLImber.Tests.Wrappers;
-using System.Text.RegularExpressions;
+using Match = System.Text.RegularExpressions.Match;
 
 namespace CLImber.Tests
 {
@@ -72,7 +72,7 @@ namespace CLImber.Tests
             _mockRequest.Setup(req => req.Route).Returns("foo");
             _mockRequest.Setup(req => req.Method).Returns("get");
 
-            _mockCommandInterpreter.Setup(ci => ci.Run("cmd", It.IsAny<ICollection<ResponseConfig>>(), It.IsAny<GroupCollection>()))
+            _mockCommandInterpreter.Setup(ci => ci.Run("cmd", It.IsAny<ICollection<ResponseConfig>>(), It.IsAny<Match>()))
                 .ReturnsAsync(new TestResponse());
 
             // Act
@@ -122,7 +122,7 @@ namespace CLImber.Tests
             _mockRequest.Setup(req => req.Route).Returns("foo/1234");
             _mockRequest.Setup(req => req.Method).Returns("GET");
 
-            _mockCommandInterpreter.Setup(ci => ci.Run("git", It.IsAny<ICollection<ResponseConfig>>(), It.Is<GroupCollection>(gc => gc[1].Value == "1234")))
+            _mockCommandInterpreter.Setup(ci => ci.Run("git", It.IsAny<ICollection<ResponseConfig>>(), It.Is<Match>(m => m.Groups[1].Value == "1234")))
                 .ReturnsAsync(new TestResponse());
 
             // Act

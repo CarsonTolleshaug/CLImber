@@ -1,26 +1,37 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 
 namespace CLImber.Wrappers
 {
     public interface IResponse
     {
-        void WriteTo(HttpContext httpContext);
+        int StatusCode { get; }
+        string Body { get; }
     }
 
     public class Response : IResponse
     {
-        public void WriteTo(HttpContext httpContext)
-        {
-            throw new NotImplementedException();
-        }
+        public int StatusCode { get; set; }
+        public string Body { get; set; }
     }
 
     public class UnhandledResponse : IResponse
     {
-        public void WriteTo(HttpContext httpContext)
+        public int StatusCode => 500;
+        public string Body => string.Empty;
+    }
+
+    public static class ResponseExtensions
+    {
+        public static void WriteTo(this IResponse response, HttpContext httpContext)
         {
-            httpContext.Response.StatusCode = 500;
+            httpContext.Response.StatusCode = response.StatusCode;
+            
+            if (string.IsNullOrWhiteSpace(response.Body))
+            {
+                return;
+            }
+
+            httpContext.Response.WriteAsync(response.Body);
         }
     }
 }
