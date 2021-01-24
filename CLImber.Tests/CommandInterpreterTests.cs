@@ -39,7 +39,7 @@ namespace CLImber.Tests
                 }
             };
 
-            _mockCliProcess.Setup(cp => cp.Execute(command))
+            _mockCliProcess.Setup(cp => cp.ExecuteAsync(command))
                 .ReturnsAsync(new CliOutput
                 {
                     ExitCode = 1
@@ -75,7 +75,7 @@ namespace CLImber.Tests
                 }
             };
 
-            _mockCliProcess.Setup(cp => cp.Execute(command))
+            _mockCliProcess.Setup(cp => cp.ExecuteAsync(command))
                 .ReturnsAsync(new CliOutput
                 {
                     ExitCode = 0
@@ -112,7 +112,7 @@ namespace CLImber.Tests
                 }
             };
 
-            _mockCliProcess.Setup(cp => cp.Execute($"foo {_1}"))
+            _mockCliProcess.Setup(cp => cp.ExecuteAsync($"foo {_1}"))
                 .ReturnsAsync(new CliOutput
                 {
                     ExitCode = 0

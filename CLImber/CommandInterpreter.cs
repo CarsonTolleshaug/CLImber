@@ -26,7 +26,7 @@ namespace CLImber
         {
             string fullCommand = regexMatch == null ? command : regexMatch.Result(command);
 
-            CliOutput output = await _cliProcess.Execute(fullCommand);
+            CliOutput output = await _cliProcess.ExecuteAsync(fullCommand);
 
             foreach (ResponseConfig responseConfig in responses)
             {

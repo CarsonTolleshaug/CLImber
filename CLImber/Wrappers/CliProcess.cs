@@ -8,7 +8,7 @@ namespace CLImber.Wrappers
 {
     public interface ICliProcess
     {
-        Task<CliOutput> Execute(string command);
+        Task<CliOutput> ExecuteAsync(string command);
     }
 
     public class CliProcess : ICliProcess
@@ -26,12 +26,13 @@ namespace CLImber.Wrappers
             };
         }
 
-        public async Task<CliOutput> Execute(string command)
+        public async Task<CliOutput> ExecuteAsync(string command)
         {
             Process shell = new Process();
             shell.StartInfo.FileName = _shellsPaths[_config.Shell];
             shell.StartInfo.RedirectStandardInput = true;
             shell.StartInfo.RedirectStandardOutput = true;
+            shell.StartInfo.RedirectStandardError = true;
             shell.StartInfo.CreateNoWindow = true;
             shell.StartInfo.UseShellExecute = false;
             shell.Start();
