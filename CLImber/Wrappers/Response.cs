@@ -16,7 +16,7 @@ namespace CLImber.Wrappers
 
     public class UnhandledResponse : IResponse
     {
-        public int StatusCode => 500;
+        public int StatusCode => 404;
         public string Body => string.Empty;
     }
 

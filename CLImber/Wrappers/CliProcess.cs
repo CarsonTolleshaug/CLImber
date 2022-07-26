@@ -31,6 +31,7 @@ namespace CLImber.Wrappers
             Process shell = new Process();
             shell.StartInfo.FileName = _shellsPaths[_config.Shell];
             shell.StartInfo.RedirectStandardInput = true;
+            shell.StartInfo.RedirectStandardError = true;
             shell.StartInfo.RedirectStandardOutput = true;
             shell.StartInfo.CreateNoWindow = true;
             shell.StartInfo.UseShellExecute = false;

@@ -1,4 +1,4 @@
-shell: bash
+shell: cmd
 endpoints:
   - name: List Files
     route: /ls/(.*)

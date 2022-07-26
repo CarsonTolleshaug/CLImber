@@ -43,7 +43,7 @@ namespace CLImber
             }
 
             Regex regex = new Regex($"^(?:{endpoint.Route})$");
-            Match match = regex.Match(request.Route);
+            Match match = regex.Match($"/{request.Route}");
 
             regexMatch = match;
 

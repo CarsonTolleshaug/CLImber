@@ -21,10 +21,6 @@ namespace CLImber
         {
             ClimberConfig climberConfig = _configuration.Get<ClimberConfig>();
             services.AddSingleton(climberConfig);
-
-            services.AddTransient<IRequestInterpreter, RequestInterpreter>();
-            services.AddTransient<ICommandInterpreter, CommandInterpreter>();
-            services.AddTransient<ICliProcess, CliProcess>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

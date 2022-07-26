@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CLImber
 {
@@ -30,17 +31,34 @@ namespace CLImber
 
             foreach (ResponseConfig responseConfig in responses)
             {
-                if (output.ExitCode == responseConfig.Condition.ExitCode)
+                if (output.ExitCode == responseConfig.Condition?.ExitCode)
                 {
                     return new Response
                     {
                         StatusCode = responseConfig.ResponseCode,
                         Body = JsonConvert.SerializeObject(responseConfig.ResponseBody)
+                            .Replace("{{stdout}}", output.StdOut.TrimEnd())
+                            .Replace("{{stderr}}", output.StdErr.TrimEnd())
+                            .Replace("{{exitcode}}", output.ExitCode.ToString())
                     };
                 }
             }
 
-            return new UnhandledResponse();
+            var defaultResponse = responses.FirstOrDefault(response => response.Condition == null);
+
+            if (defaultResponse != null)
+            {
+                return new Response
+                {
+                    StatusCode = defaultResponse.ResponseCode,
+                    Body = JsonConvert.SerializeObject(defaultResponse.ResponseBody)
+                            .Replace("{{stdout}}", output.StdOut.TrimEnd())
+                            .Replace("{{stderr}}", output.StdErr.TrimEnd())
+                            .Replace("{{exitcode}}", output.ExitCode.ToString())
+                };
+            }
+
+            return new UnhandledResponse();            
         }
     }
 }

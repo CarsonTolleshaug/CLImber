@@ -1,0 +1,27 @@
+shell: bash
+endpoints:
+  - name: List Files
+    route: /ls
+    method: GET
+    command: ls -la
+    responses:
+    - condition:
+        exitCode: 0
+      responseCode: 200
+      responseBody: {
+        "outputText": "{{stdout}}"
+      }
+    - responseCode: 400
+      responseBody: {
+        "message": "unable to process request. Exit code {{exitcode}}"
+      }
+  - name: Print Working Directory
+    route: /pwd
+    method: GET
+    command: pwd
+    responses:
+    - responseCode: 200
+      responseBody: {
+        "outputText": "{{stdout}}"
+      }
+    
